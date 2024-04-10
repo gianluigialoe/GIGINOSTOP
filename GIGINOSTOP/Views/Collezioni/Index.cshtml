@@ -1,0 +1,46 @@
+﻿@model List<GIGINOSTOP.Models.Articoli>
+
+@{
+    ViewBag.Title = "Collezione";
+}
+
+<h2>Collezione</h2>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Immagine a sinistra -->
+        <div class="col-lg-4 mb-3">
+            <img src="https://www.gamestop.it/Views/Locale/Content/Images/landing.GenericPlayStationGames/BannerShowcase@2x.jpg?rel=2" class="img-fluid" alt="Immagine">
+        </div>
+
+        <!-- Cards a destra -->
+        <div class="col-lg-8">
+            <div class="row">
+                @foreach (var articolo in Model)
+                {
+                    <div class="col-md-4 mb-3">
+                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
+                            <div class="card border-0">
+                                <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
+                                <div class="card-body p-2">
+                                    <h5 class="card-title">@articolo.nomearticolo</h5>
+                                    @if (articolo.in_offerta.HasValue && articolo.prezzo_offerta.HasValue)
+                                    {
+                                        <p class="card-text">
+                                            <del>Prezzo: @articolo.prezzo €</del><br>
+                                            <strong>Prezzo in offerta: @articolo.prezzo_offerta €</strong>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">Prezzo: @articolo.prezzo €</p>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+        

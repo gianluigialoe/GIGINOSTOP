@@ -1,0 +1,201 @@
+﻿@model IEnumerable<GIGINOSTOP.Models.Articoli>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GameStop - Home</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ 
+</head>
+<body>
+    <header>
+        <!-- Includi qui l'header, se necessario -->
+    </header>
+    <div class="container-fluid px-0">
+        <div id="carouselExample" class="carousel slide shadow">
+            <div class="carousel-inner">
+                @foreach (var articolo in Model.Where(a => a.in_offerta == true).Take(5))
+                {
+                    <div class="carousel-item @(articolo == Model.First() ? "active" : "")">
+                        @if (!string.IsNullOrEmpty(articolo.immagine) && !articolo.immagine.StartsWith("~/Content/Assets"))
+                        {
+                            <a href="@Url.Action("Dettagli", "Home", new { id = articolo.id })">
+                                <img src="@articolo.immagine" class="d-block w-100" alt="@articolo.nomearticolo">
+                            </a>
+                        }
+                        else if (!string.IsNullOrEmpty(articolo.immagine) && articolo.immagine.StartsWith("~/Content/Assets"))
+                        {
+                            <a href="@Url.Action("Dettagli", "Home", new { id = articolo.id })">
+                                <img src="@Url.Content(articolo.immagine)" class="d-block w-100" alt="@articolo.nomearticolo">
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Collezione PlayStation -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/PS/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione PlayStation">
+                </a>
+            </div>
+
+            <!-- Collezione Xbox -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/Xbox/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione Xbox">
+                </a>
+            </div>
+
+            <!-- Collezione Nintendo -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/Nintendo/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione Nintendo">
+                </a>
+            </div>
+
+            <!-- Collezione PC Build -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/PCBuild/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione PC Build">
+                </a>
+            </div>
+
+            <!-- Collezione Bandai -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/Bandai/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione Bandai">
+                </a>
+            </div>
+
+            <!-- IconSet PlayStation Accessories -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/_IconSet/IconSet_PlayStationAccessoriesGeneric.svg" class="img-fluid" alt="IconSet PlayStation Accessories">
+                </a>
+            </div>
+
+            <!-- Collezione Very Mobile -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/VeryMobile/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione Very Mobile">
+                </a>
+            </div>
+
+            <!-- Collezione Hori -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/Hori/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione Hori">
+                </a>
+            </div>
+
+            <!-- Logo Publisher Pokemon -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/LogosPublisher/Pokemon.png" class="img-fluid" alt="Logo Publisher Pokemon">
+                </a>
+            </div>
+
+            <!-- Collezione EFC24 -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/FeatureBlocks/EFC24/FeatureBlock@2x.jpg" class="img-fluid" alt="Collezione EFC24">
+                </a>
+            </div>
+
+            <!-- IconSet Games All Platforms -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//www.gamestop.it/Views/Locale/Content/Images/_IconSet/IconSet_GamesAllPlatforms.svg" class="img-fluid" alt="IconSet Games All Platforms">
+                </a>
+            </div>
+
+            <!-- Logo MSI -->
+            <div class="col-lg-2 col-md-4 col-sm-6">
+                <a href="@Url.Action("Index", "Collezioni")" class="btn btn-custom collezione-link">
+                    <img src="//microtech.store/ludix/_images/logo_msi.png" class="img-fluid" alt="Logo MSI">
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <div class="container-fluid">
+
+        <!-- Immagine responsiva senza link cliccabile -->
+        <picture>
+            <source media="(max-width: 576px)" sizes="100vw"
+                    srcset="//www.gamestop.it/Views/Locale/Content/Images//landing.GSProRevamp/FullWidthBanner/Banner-mobile.jpg 1x,
+                        //www.gamestop.it/Views/Locale/Content/Images//landing.GSProRevamp/FullWidthBanner/Banner-mobile@2x.jpg 2x">
+            <source media="(max-width: 959px)" sizes="100vw"
+                    srcset="//www.gamestop.it/Views/Locale/Content/Images//landing.GSProRevamp/FullWidthBanner/Banner-half.jpg 1x,
+                        //www.gamestop.it/Views/Locale/Content/Images//landing.GSProRevamp/FullWidthBanner/Banner-half@2x.jpg 2x">
+            <source sizes="100vw"
+                    srcset="//www.gamestop.it/Views/Locale/Content/Images//landing.GSProRevamp/FullWidthBanner/Banner-full.jpg 1x,
+                        //www.gamestop.it/Views/Locale/Content/Images//landing.GSProRevamp/FullWidthBanner/Banner-full@2x.jpg 2x">
+            <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.GSProRevamp/FullWidthBanner/Banner-full.jpg"
+                 alt="Immagine senza link cliccabile" class="non-clickable-image">
+        </picture>
+
+    </div>
+    <style>
+        /* Stile per rendere le immagini responsive */
+        .img-fluid {
+            width: 100%;
+            height: auto;
+            transition: transform 0.3s ease;
+        }
+
+        /* Stile per l'effetto hover */
+        .collezione-link {
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px; /* Spazio tra le immagini */
+        }
+
+            .collezione-link::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5); /* Colore sfondo trasparente */
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .collezione-link:hover::before {
+                opacity: 1;
+            }
+
+            /* Stile per l'effetto di zoom durante l'hover */
+            .collezione-link:hover .img-fluid {
+                transform: scale(1.1); /* Effetto di zoom del 10% */
+            }
+    </style>
+
+
+    <footer>
+        <!-- Includi qui il footer, se necessario -->
+    </footer>
+
+
+</body>
+</html>

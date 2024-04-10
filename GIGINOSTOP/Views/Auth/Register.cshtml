@@ -1,0 +1,99 @@
+﻿@model GIGINOSTOP.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+<style>
+    .register-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        height: 100vh;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    .register-form {
+        width: 400px;
+        padding: 30px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+    }
+
+        .register-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .btn-register {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: rgb(4, 116, 124);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .btn-register:hover {
+            background-color: #39F0FF;
+        }
+</style>
+
+<div class="register-container">
+    <div class="register-form">
+        <h2>Registrazione</h2>
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.nome, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.nome, new { @class = "form-control", placeholder = "Inserisci il tuo nome" })
+                @Html.ValidationMessageFor(m => m.nome, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.cognome, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.cognome, new { @class = "form-control", placeholder = "Inserisci il tuo cognome" })
+                @Html.ValidationMessageFor(m => m.cognome, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.email, new { @class = "form-label" })
+                @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Inserisci il tuo indirizzo email" })
+                @Html.ValidationMessageFor(m => m.email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.password, "Password", new { @class = "form-label" })
+                @Html.PasswordFor(m => m.password, new { @class = "form-control", placeholder = "Inserisci la tua password" })
+                @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.confermapassword, "Conferma Password", new { @class = "form-label" })
+                @Html.PasswordFor(m => m.confermapassword, new { @class = "form-control", placeholder = "Conferma password" })
+                @Html.ValidationMessageFor(m => m.confermapassword, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn-register">Registrati</button>
+        }
+    </div>
+</div>

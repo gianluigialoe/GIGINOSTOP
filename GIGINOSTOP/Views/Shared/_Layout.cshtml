@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Applicazione ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+        <div class="container">
+            @Html.ActionLink("Nome dell'applicazione", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Attiva/Disattiva spostamento" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                ARTICOLI
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Lista Articoli", "Lista", "Articoli", new { area = "" }, new { @class = "dropdown-item text-custom" })</li>
+                                <li>@Html.ActionLink("Aggiungi Articoli", "Index", "Articoli", new { area = "" }, new { @class = "dropdown-item text-custom" })</li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                PIATTAFORME
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Lista Piattaforme", "Index", "Piattaforme", new { area = "" }, new { @class = "dropdown-item text-custom" })</li>
+                                <li>@Html.ActionLink("Aggiungi Piattaforme", "Aggiungi", "Piattaforme", new { area = "" }, new { @class = "dropdown-item text-custom" })</li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                CATEGORIE
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Lista Categorie", "Index", "Categorie", new { area = "" }, new { @class = "dropdown-item text-custom" })</li>
+                                <li>@Html.ActionLink("Aggiungi Categorie", "Aggiungi", "Categorie", new { area = "" }, new { @class = "dropdown-item text-custom" })</li>
+                            </ul>
+                        </li>
+                    }
+
+                    <li>@Html.ActionLink("Contatto", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                </ul>
+            </div>
+            <div>
+                @Html.ActionLink("Carrello", "Visualizza", "Carrello", new { area = "" }, new { @class = "btn btn-custom", @id = "carrelloLink" })
+                <span id="carrelloCounter" class="badge bg-danger">0</span>
+            </div>
+
+
+
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <a href="@Url.Action("Login", "Auth", new { area = "" })" class="btn btn-custom">Login</a>
+                <a href="@Url.Action("Register", "Auth", new { area = "" })" class="btn btn-outline-light text-custom py-2">Register</a>
+            }
+            else
+            {
+                <form action="@Url.Action("Logout", "Auth")" method="post" style="display: inline;">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-custom">Logout</button>
+                </form>
+            }
+        </div>
+    </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+       
+            <footer class="bg-dark text-white py-5">
+                <div class="container">
+                    <div class="row">
+                        <!-- Colonna 1 -->
+                        <div class="col-md-3">
+                            <h5>Esplora</h5>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-white">Chi siamo</a></li>
+                                <li><a href="#" class="text-white">Lavora con noi</a></li>
+                                <li><a href="#" class="text-white">Informativa sulla privacy</a></li>
+                                <li><a href="#" class="text-white">Termini di servizio</a></li>
+                            </ul>
+                        </div>
+                        <!-- Colonna 2 -->
+                        <div class="col-md-3">
+                            <h5>Assistenza</h5>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-white">Centro assistenza</a></li>
+                                <li><a href="#" class="text-white">Ordini e pagamenti</a></li>
+                                <li><a href="#" class="text-white">Restituzioni</a></li>
+                                <li><a href="#" class="text-white">Contattaci</a></li>
+                            </ul>
+                        </div>
+                        <!-- Colonna 3 -->
+                        <div class="col-md-3">
+                            <h5>Seguici</h5>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-white">Facebook</a></li>
+                                <li><a href="#" class="text-white">Twitter</a></li>
+                                <li><a href="#" class="text-white">Instagram</a></li>
+                                <li><a href="#" class="text-white">YouTube</a></li>
+                            </ul>
+                        </div>
+                        <!-- Colonna 4 -->
+                        <div class="col-md-3">
+                            <h5>Scarica l'app</h5>
+                            <div class="d-flex">
+                                <a href="#" class="btn btn-outline-light mr-2">App Store</a>
+                                <a href="#" class="btn btn-outline-light">Google Play</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+     
+    </div>
+    <script src="~/Scripts/popper.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var dropdownToggleList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
+            dropdownToggleList.forEach(function (dropdownToggleEl) {
+                new bootstrap.Dropdown(dropdownToggleEl);
+            });
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

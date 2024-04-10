@@ -1,0 +1,32 @@
+﻿@model GIGINOSTOP.Models.Categoria
+@{
+    ViewBag.Title = "Dettagli";
+}
+
+<h2>Dettagli della Piattaforma</h2>
+
+@using (Html.BeginForm("Modifica", "Categorie", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.id)
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nome, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nome, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.nome, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <!-- Altri campi della piattaforma, se necessario -->
+        <!-- Pulsante di invio -->
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Salva" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

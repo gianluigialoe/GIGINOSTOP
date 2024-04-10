@@ -1,0 +1,165 @@
+﻿@model GIGINOSTOP.Models.DettaglioArticoloViewModel
+
+@{
+    ViewBag.Title = "Dettagli Articolo";
+}
+
+<div class="container">
+    <h2>Dettagli Articolo</h2>
+
+    @if (Model != null && Model.Articolo != null)
+    {
+        <div class="row">
+            <!-- Immagine a sinistra -->
+            <div class="col-lg-4 mb-3">
+                <div class="image-container">
+                    <img src="@Model.Articolo.immagine" alt="@Model.Articolo.nomearticolo" class="img-fluid">
+                </div>
+            </div>
+
+            <!-- Descrizione a destra -->
+            <div class="col-lg-8 mb-3">
+                <div class="details-container">
+                    <h3>@Model.Articolo.nomearticolo</h3>
+                    <p>@Model.Articolo.descrizione</p>
+
+                    <!-- Form per l'aggiunta al carrello -->
+                    @using (Html.BeginForm("AggiungiAlCarrello", "Carrello", FormMethod.Post, new { id = "aggiungiAlCarrelloForm" }))
+                    {
+                        @Html.Hidden("id", Model.Articolo.id)
+                        <label for="quantita">Quantità:</label>
+                        <input type="number" name="quantita" id="quantita" value="1" min="1" required class="form-control">
+                        <button type="button" onclick="aggiungiAlCarrello()" class="btn btn-primary mt-3">
+                            Aggiungi al Carrello
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="price-container mt-3">
+            @if (Model.Articolo.in_offerta.HasValue && Model.Articolo.prezzo_offerta.HasValue)
+            {
+                <p>
+                    <del>Prezzo: @Model.Articolo.prezzo €</del><br>
+                    <strong>Prezzo in offerta: @Model.Articolo.prezzo_offerta €</strong>
+                </p>
+            }
+            else
+            {
+                <p>Prezzo: @Model.Articolo.prezzo €</p>
+            }
+        </div>
+
+        <!-- Form per inviare una nuova recensione -->
+        if (User.Identity.IsAuthenticated && Model.HaEffettuatoOrdine)
+        {
+            using (Html.BeginForm("ScriviRecensione", "Collezioni", FormMethod.Post))
+            {
+                @Html.HiddenFor(model => model.IdArticolo)
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TestoRecensione, "Recensione")
+                    @Html.TextAreaFor(model => model.TestoRecensione, new { @class = "form-control", rows = 4 })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PunteggioRecensione, "Punteggio")
+                    @Html.DropDownListFor(model => model.PunteggioRecensione, new SelectList(new[] { 1, 2, 3, 4, 5 }), new { @class = "form-control" })
+                </div>
+                <button type="submit" class="btn btn-primary">Invia Recensione</button>
+            }
+        }
+        else if (!User.Identity.IsAuthenticated)
+        {
+            <p>Per scrivere una recensione, effettua l'accesso.</p>
+        }
+        else
+        {
+            <p>Devi effettuare un ordine per questo articolo prima di poter lasciare una recensione.</p>
+        }
+
+        <!-- Visualizza le recensioni -->
+        <h3>Recensioni</h3>
+        if (Model.Recensioni != null && Model.Recensioni.Any())
+        {
+            foreach (var recensione in Model.Recensioni)
+            {
+                <div class="recensione">
+                    <p><strong>Utente:</strong> @recensione.Utenti.nome</p>
+                    <p><strong>Testo:</strong> @recensione.testo</p>
+                    <p><strong>Punteggio:</strong> @recensione.punteggio</p>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Non ci sono recensioni per questo articolo.</p>
+        }
+    }
+    else
+    {
+        <p>Articolo non trovato.</p>
+    }
+</div>
+<!-- Modifica Recensione Form -->
+@using (Html.BeginForm("ModificaRecensione", "Articolo", FormMethod.Post))
+{
+    @Html.Hidden("idRecensione", Model.Recensioni) <!-- Passa direttamente l'ID della recensione -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.TestoRecensione, "Nuovo Testo")
+        @Html.TextAreaFor(model => model.TestoRecensione, new { @class = "form-control", rows = 4 })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.PunteggioRecensione, "Nuovo Punteggio")
+        @Html.DropDownListFor(model => model.PunteggioRecensione, new SelectList(new[] { 1, 2, 3, 4, 5 }), new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Salva Modifiche</button>
+}
+
+<!-- Elimina Recensione Form -->
+@using (Html.BeginForm("EliminaRecensione", "Articolo", FormMethod.Post))
+{
+    @Html.Hidden("idRecensione", Model.Recensioni) <!-- Passa direttamente l'ID della recensione -->
+    <button type="submit" class="btn btn-danger">Elimina Recensione</button>
+}
+<!-- Aggiungi jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    function aggiungiAlCarrello() {
+        var id = $('#id').val();
+        var quantita = $('#quantita').val();
+
+        $.ajax({
+            type: "POST",
+            url: '/Carrello/AggiungiAlCarrello',
+            data: {
+                id: id,
+                quantita: quantita
+            },
+            success: function (response) {
+                if (response.success) {
+                    // Aggiorna il contatore nel badge
+                    var currentCount = parseInt($('#carrelloCounter').text().trim());
+                    var newCount = currentCount + parseInt(quantita);
+                    $('#carrelloCounter').text(newCount);
+                } else {
+                    console.error("Errore durante l'aggiunta all'articolo al carrello.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Si è verificato un errore durante l'aggiunta dell'articolo al carrello.");
+            }
+        });
+    }
+
+    // Funzione per inizializzare il contatore del carrello all'avvio della pagina
+    $(document).ready(function () {
+        // Recupera e mostra il valore iniziale del contatore del carrello
+        var carrelloJson = $.cookie("Carrello");
+        if (carrelloJson) {
+            var carrello = JSON.parse(carrelloJson);
+            var totalCount = carrello.reduce((total, item) => total + item.Quantita, 0);
+            $('#carrelloCounter').text(totalCount);
+        }
+    });
+
+</script>

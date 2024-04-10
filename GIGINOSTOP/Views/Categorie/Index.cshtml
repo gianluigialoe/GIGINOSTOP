@@ -1,0 +1,38 @@
+﻿@model List<GIGINOSTOP.Models.Categoria>
+
+@{
+    ViewBag.Title = "Lista delle Categorie";
+}
+
+<h2>Lista delle Categorie</h2>
+
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th></th> <!-- Aggiungi una colonna per il dettaglio -->
+        <th></th> <!-- Aggiungi una colonna per i pulsanti di modifica ed eliminazione -->
+        <th></th>
+    </tr>
+    @foreach (var categoria in Model)
+    {
+        <tr>
+            <td>@categoria.id</td>
+            <td>@categoria.nome</td>
+            <td>@Html.ActionLink("Dettagli", "Dettagli", new { id = categoria.id })</td> <!-- Aggiungi un link per i dettagli -->
+
+         
+            <td>
+                @using (Html.BeginForm("Elimina", "Categorie", FormMethod.Post))
+                {
+                    @Html.Hidden("ID", categoria.id)
+                    <button type="submit" class="btn btn-danger">Elimina</button>
+                }
+            </td>
+        </tr>
+    }
+</table>
+
+<div>
+    @Html.ActionLink("Torna Indietro", "Index")
+</div>

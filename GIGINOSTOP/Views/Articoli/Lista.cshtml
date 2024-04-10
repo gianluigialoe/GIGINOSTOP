@@ -1,0 +1,50 @@
+﻿@model IEnumerable<GIGINOSTOP.Models.Articoli>
+
+@{
+    ViewBag.Title = "Lista Articoli";
+}
+
+<h2>Lista Articoli</h2>
+
+<table class="table">
+    <tr>
+        <th>Nome Articolo</th>
+        <th>Descrizione</th>
+        <th>Categoria</th>
+        <th>Piattaforma</th>
+        <th>Prezzo</th>
+        <th>In Offerta</th>
+    </tr>
+    @foreach (var articolo in Model)
+    {
+<tr>
+    <td>@articolo.nomearticolo</td>
+    <td>@articolo.descrizione</td>
+    <td>@(articolo.Categoria?.nome ?? "Nessuna categoria")</td>
+    <td>@(articolo.Piattaforma?.nome ?? "Nessuna Piattaforma")</td>
+    <td>
+        @if (articolo.in_offerta.HasValue && articolo.in_offerta.Value)
+        {
+            <del>@articolo.prezzo</del><br />
+            <strong>@articolo.prezzo_offerta</strong>
+        }
+        else
+        {
+            @articolo.prezzo
+        }
+    </td>
+    <td>@(articolo.in_offerta.HasValue && articolo.in_offerta.Value ? "Sì" : "No")</td>
+    <td>
+        @using (Html.BeginForm("Elimina", "Articoli", FormMethod.Post))
+        {
+            <input hidden="hidden" name="ID" value="@articolo.id" />
+            <button class="btn btn-danger p-2">Elimina</button>
+        }
+    </td>
+    <td>
+        @Html.ActionLink("Dettagli", "Dettagli", "Articoli", new { id = articolo.id }, null)
+    </td>
+</tr>
+    }
+
+</table>
