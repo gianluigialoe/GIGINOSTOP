@@ -1,121 +1,52 @@
-﻿@model GIGINOSTOP.Models.Articoli
+﻿<div class="title background-white padding-top-30 padding-bottom-30 mobile-padding-top-30 aem-GridColumn aem-GridColumn--default--12">
 
-@{
-    ViewBag.Title = "Dettagli Articolo";
-}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>@ViewBag.Title</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <h2>Dettagli Articolo</h2>
 
-        @if (Model != null)
-        {
-            <div class="row">
-                <!-- Immagine a sinistra -->
-                <div class="col-lg-4 mb-3">
-                    <div class="image-container">
-                        <img src="@Model.immagine" alt="@Model.nomearticolo" class="img-fluid">
-                    </div>
+
+
+
+    <overline-title-link>
+        <div class="container ">
+            <div class="overline-title-link row ">
+                <div class="col-12 col-lg-8 m-title-price-wrapper">
+                    <overline-title-price>
+                        <div class="overline-title-price">
+                            <p class="sony-text-overline"></p>
+                            <h1 class="sony-text-h1">Scopri bundle e console PS5®</h1>
+
+
+                        </div>
+                    </overline-title-price>
                 </div>
 
-                <!-- Descrizione a destra -->
-                <div class="col-lg-8 mb-3">
-                    <div class="details-container">
-                        <h3>@Model.nomearticolo</h3>
-                        <p>@Model.descrizione</p>
+            </div>
+        </div>
+    </overline-title-link>
+</div>
+<div class="container">
+    <div class="row align-items-center">
+        <!-- Immagine a Sinistra (per schermi grandi) -->
+        <div class="col-lg-6">
+            <a href="@Url.Action("Index", "Collezioni")">
+                <img src="https://media.direct.playstation.com/is/image/psdglobal/IT_ps5_digital_slim_hero_1023x599?$Hero_Desktop$" alt="Console PlayStation®5 edizione digitale" class="img-fluid">
+            </a>
+        </div>
 
-                        <!-- Form per l'aggiunta al carrello -->
-                        @using (Html.BeginForm("AggiungiAlCarrello", "Carrello", FormMethod.Post, new { id = "aggiungiAlCarrelloForm" }))
-                        {
-                            @Html.HiddenFor(model => model.id)
-
-                            <label for="quantita">Quantità:</label>
-                            <input type="number" name="quantita" id="quantita" value="1" min="1" required class="form-control">
-
-                            <button type="submit" class="btn btn-primary mt-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20" width="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                    <circle cx="9" cy="21" r="1"></circle>
-                                    <circle cx="20" cy="21" r="1"></circle>
-                                    <path d="M1 4h4l3 10a2 2 0 002 1.6h8.5a2 2 0 002-1.6L22 6H11"></path>
-                                </svg>
-                                Aggiungi al Carrello
-                            </button>
-                        }
-                    </div>
+        <!-- Contenuto Testuale a Destra -->
+        <div class="col-lg-6">
+            <div class="text-center text-lg-start">
+                <div class="mb-4">
+                    <p class="text-uppercase fw-bold">Elegante. Compatta. Evoluta.</p>
+                    <h2 class="fw-bold">Console PlayStation®5 edizione digitale</h2>
                 </div>
+
+                <p>Regalati la sottile PS5® Digital Edition a soli €449,99</p>
+
+                <a href="@Url.Action("Index", "Collezioni")" target="_self" class="btn btn-primary btn-lg">Negozio</a>
             </div>
-
-            <div class="price-container mt-3">
-                @if (Model.in_offerta.HasValue && Model.prezzo_offerta.HasValue)
-                {
-                    <p>
-                        <del>Prezzo: @Model.prezzo €</del><br>
-                        <strong>Prezzo in offerta: @Model.prezzo_offerta €</strong>
-                    </p>
-                }
-                else
-                {
-                    <p>Prezzo: @Model.prezzo €</p>
-                }
-            </div>
-        }
-        else
-        {
-            <p>Articolo non trovato.</p>
-        }
-
-
-
-        <!-- Bottone "Aggiungi recensione" -->
-        @if (User.Identity.IsAuthenticated)
-        {
-            @Html.ActionLink("Aggiungi recensione", "Create", "Recensioni", new { idArticolo = Model.id }, new { @class = "btn btn-primary mt-3" })
-        }
+        </div>
     </div>
-
-    <a href="@Url.Action("Index", "Collezioni")" class="btn btn-primary mt-3">Torna alla lista</a>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script>
-        $(function () {
-            $('#aggiungiAlCarrelloForm').submit(function (event) {
-                event.preventDefault();
-                aggiungiAlCarrello();
-            });
-        });
-
-        function aggiungiAlCarrello() {
-            var id = $('#id').val();
-            var quantita = $('#quantita').val();
-
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("AggiungiAlCarrello", "Carrello")',
-                data: {
-                    id: id,
-                    quantita: quantita
-                },
-                success: function (response) {
-                    updateCarrelloIndicator(response);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Si è verificato un errore durante l'aggiunta dell'articolo al carrello.");
-                }
-            });
-        }
-
-        function updateCarrelloIndicator(quantity) {
-            var carrelloIndicator = $('#carrelloIndicator');
-            carrelloIndicator.show();
-            var carrelloCounter = $('#carrelloCounter');
-            carrelloCounter.text(quantity);
-        }
-    </script>
-</body>
-</html>
+</div>
+<div class="container-fluid mt-3">
+    <img src="https://media.direct.playstation.com/is/image/psdglobal/IT_apple_music_desktop_banner_1600x508" class="img-fluid" alt="Banner Apple Music" style="width: 100%; height: auto;">
+</div>

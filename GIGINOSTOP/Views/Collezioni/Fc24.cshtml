@@ -1,0 +1,65 @@
+﻿@model List<GIGINOSTOP.Models.Articoli>
+
+@{
+    ViewBag.Title = "Fc24";
+}
+
+
+<section class="section">
+
+
+    <div class="MB-main">
+        <!-- <p>Entra nel Club</p> -->
+        <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.fc24/countdownFC/logo.png?rel=1" alt="">
+    </div>
+
+
+
+
+</section>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Immagine a sinistra -->
+        <div class="col-lg-4 mb-3">
+            <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.fc24/LandingPage/CategoryCard/1/ProductCard.jpg" class="img-fluid" alt="Immagine">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.fc24/LandingPage/CategoryCard/2/ProductCard.jpg" class="img-fluid" alt="Immagine">
+        </div>
+        <div class="col-lg-4 mb-3">
+            <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.fc24/LandingPage/CategoryCard/3/ProductCard.jpg?rel=1" class="img-fluid" alt="Immagine">
+        </div>
+        <div class="container-fluid">
+            <h2 class="headline">EA SPORTS FC24 <strong>Trailer</strong></h2>
+            <p class="lead" style="-webkit-line-clamp: 4;">Goditi un realismo senza precedenti in EA SPORTS FC™ 24, l'esperienza più fedele al gioco più bello del mondo, con le squadre, i campionati e i più grandi campioni di questo sport. Include più di 19.000 giocatori e giocatrici di oltre 700 squadre provenienti da più di 30 campionati e oltre 100 stadi.</p>
+
+            <div class="row">
+                @foreach (var articolo in Model)
+                {
+                    <div class="col-lg-3 col-md-6 mb-3">
+                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
+                            <div class="card border-0">
+                                <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
+                                <div class="card-body p-2">
+                                    <h5 class="card-title">@articolo.nomearticolo</h5>
+                                    @if (articolo.in_offerta.HasValue && articolo.prezzo_offerta.HasValue)
+                                    {
+                                        <p class="card-text">
+                                            <del>Prezzo: @articolo.prezzo €</del><br>
+                                            <strong>Prezzo in offerta: @articolo.prezzo_offerta €</strong>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">Prezzo: @articolo.prezzo €</p>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        </div>
+    </div>

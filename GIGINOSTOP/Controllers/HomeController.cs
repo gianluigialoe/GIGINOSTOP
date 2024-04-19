@@ -17,16 +17,15 @@ namespace GIGINOSTOP.Controllers
             return View(articoli);
         }
 
-        public ActionResult Dettagli(int id)
+        public ActionResult Dettagli()
         {
-            Articoli articolo = db.Articoli.Find(id);
-            if (articolo == null)
-            {
-                return HttpNotFound();
-            }
+        
+            return View();
+        }
+        public ActionResult Supermario()
+        {
 
-
-            return View(articolo);
+            return View();
         }
 
 
@@ -42,6 +41,23 @@ namespace GIGINOSTOP.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        public ActionResult SearchArticles(string q)
+        {
+            // Confronta il termine di ricerca con il nomearticolo (ignorando maiuscole/minuscole)
+            var results = db.Articoli
+                            .Where(a => a.nomearticolo.ToLower().Contains(q.ToLower()))
+                            .Select(a => new
+                            {
+                                a.id,
+                                a.nomearticolo,
+                                a.immagine,
+                                a.prezzo,
+                                a.prezzo_offerta
+                            })
+                            .ToList();
+
+            return Json(results, JsonRequestBehavior.AllowGet);
         }
     }
 }

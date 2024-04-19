@@ -1,41 +1,58 @@
 ﻿@model List<GIGINOSTOP.Models.CarrelloItem>
-@{
-    ViewBag.Title = "Visualizza";
-}
 
-<!-- Includere i fogli di stile e gli script necessari -->
+<div class="container">
+    <h2>Il Tuo Carrello</h2>
 
-
-    <h2>Carrello</h2>
-
-    <div id="carrello">
-        @{
-            decimal total = 0;
-            foreach (var item in Model)
-            {
-                <div class="item">
-                    <h4>@item.NomeArticolo</h4>
-                    <p>Prezzo: @item.Prezzo</p>
-                    <form method="post" action="@Url.Action("AggiornaQuantita", "Carrello")">
-                        <label>Quantità:</label>
-                        <input type="hidden" name="id" value="@item.ArticoloId" />
-                        <input type="number" name="quantita" value="@item.Quantita" min="1" />
-                        <input type="submit" value="Aggiorna Quantità" />
-                    </form>
-                    <form method="post" action="@Url.Action("EliminaArticolo", "Carrello")">
-                        <input type="hidden" name="id" value="@item.ArticoloId" />
-                        <button type="submit">Elimina</button>
-                    </form>
-                    <!-- Altri dettagli dell'articolo -->
-                </div>
-                total = total + (decimal)(item.Prezzo * item.Quantita); // Aggiungi il prezzo moltiplicato per la quantità al totale
-            }
-        }
-        <h3>Totale: @total</h3> <!-- Mostra il totale -->
-    </div>
-    @using (Html.BeginForm("ConfermaOrdine", "Carrello", FormMethod.Post))
+    @if (Model.Count > 0)
     {
-        <input type="submit" value="Conferma Ordine" class="btn btn-primary" />
+        <div id="carrello" class="mt-4">
+            @foreach (var item in Model)
+            {
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            @if (!string.IsNullOrEmpty(item.ImmagineUrl))
+                            {
+                                <img src="@Url.Content(item.ImmagineUrl)" class="img-fluid rounded-start" alt="@item.NomeArticolo">
+                            }
+                            else
+                            {
+                                <img src="placeholder.jpg" class="img-fluid rounded-start" alt="Immagine non disponibile">
+                            }
+
+
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.NomeArticolo</h5>
+                                <p class="card-text">Prezzo: @item.Prezzo €</p>
+                                <form method="post" action="@Url.Action("AggiornaQuantita", "Carrello")">
+                                    <div class="mb-3">
+                                        <label for="quantita_@item.ArticoloId" class="form-label">Quantità:</label>
+                                        <input type="hidden" name="id" value="@item.ArticoloId" />
+                                        <input type="number" name="quantita" id="quantita_@item.ArticoloId" class="form-control" value="@item.Quantita" min="1" />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Aggiorna Quantità</button>
+                                </form>
+                                <form method="post" action="@Url.Action("EliminaArticolo", "Carrello")">
+                                    <input type="hidden" name="id" value="@item.ArticoloId" />
+                                    <button type="submit" class="btn btn-danger mt-2">Elimina</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="mt-4">
+                <h3>Totale: @Model.Sum(item => item.Prezzo * item.Quantita) €</h3>
+                <form method="post" action="@Url.Action("ConfermaOrdine", "Carrello")">
+                    <button type="submit" class="btn btn-success">Conferma Ordine</button>
+                </form>
+            </div>
+        </div>
     }
-
-
+    else
+    {
+        <p>Il carrello è vuoto.</p>
+    }
+</div>

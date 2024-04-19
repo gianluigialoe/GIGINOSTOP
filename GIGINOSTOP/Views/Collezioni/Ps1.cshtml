@@ -1,0 +1,47 @@
+﻿@model List<GIGINOSTOP.Models.Articoli>
+
+@{
+    ViewBag.Title = "Xbox";
+}
+
+<h2>Xbox</h2>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Immagine a sinistra -->
+        <div class="col-lg-4 mb-3">
+            <img src="data:image/jpeg;base64,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" class="img-fluid" alt="Immagine">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHvZ9uaZJfP56Zr4cIsuUa8cS7jL4_G3CNNg&usqp=CAU" class="img-fluid mt-2" alt="Immagine">
+        </div>
+
+        <!-- Cards a destra -->
+        <div class="col-lg-8">
+            <div class="row">
+                @foreach (var articolo in Model)
+                {
+                    <div class="col-md-4 mb-3">
+                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
+                            <div class="card border-0">
+                                <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
+                                <div class="card-body p-2">
+                                    <h5 class="card-title">@articolo.nomearticolo</h5>
+                                    @if (articolo.in_offerta.HasValue && articolo.prezzo_offerta.HasValue)
+                                    {
+                                        <p class="card-text">
+                                            <del>Prezzo: @articolo.prezzo €</del><br>
+                                            <strong>Prezzo in offerta: @articolo.prezzo_offerta €</strong>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text">Prezzo: @articolo.prezzo €</p>
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

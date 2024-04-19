@@ -10,7 +10,8 @@ namespace GIGINOSTOP.Models
         public int ArticoloId { get; set; }
         public string NomeArticolo { get; set; }
         public decimal? Prezzo { get; set; }
-        public int Quantita { get; set; } 
+        public int Quantita { get; set; }
+        public string ImmagineUrl { get; set; }
     }
 
 }

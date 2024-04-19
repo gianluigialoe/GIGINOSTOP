@@ -13,49 +13,62 @@ namespace GIGINOSTOP.Controllers
     {
         DBContext db = new DBContext();
 
-  
 
-            // Azione per visualizzare il carrello
-            public ActionResult Visualizza()
+
+        public ActionResult Visualizza()
+        {
+            List<CarrelloItem> carrello;
+
+            if (User.Identity.IsAuthenticated)
             {
-                List<CarrelloItem> carrello;
-
-                if (User.Identity.IsAuthenticated)
-                {
-                    // Recupera il carrello dal database per l'utente autenticato
-                    var userId = User.Identity.Name;
+                // Utente autenticato: recupera il carrello dal database
+                var userId = User.Identity.Name;
                 var user = db.Utenti.FirstOrDefault(u => u.id.ToString() == userId);
-                    if (user != null)
-                    {
-                        var userIdInt = user.id;
 
-                        carrello = db.VociCarrello
-                            .Where(vc => vc.Carrello.idutente == userIdInt)
-                            .Select(vc => new CarrelloItem
-                            {
-                                ArticoloId = (int)vc.idarticolo,
-                                NomeArticolo = vc.Articoli.nomearticolo,
-                                Prezzo = vc.prezzo,
-                                Quantita = (int)vc.quantita
-                            })
-                            .ToList();
-                    }
-                    else
-                    {
-                        carrello = new List<CarrelloItem>();
-                    }
+                if (user != null)
+                {
+                    var userIdInt = user.id;
+
+                    carrello = db.VociCarrello
+                        .Where(vc => vc.Carrello.idutente == userIdInt)
+                        .Include(vc => vc.Articoli) // Includi gli articoli associati
+                        .Select(vc => new CarrelloItem
+                        {
+                            ArticoloId = (int)vc.idarticolo,
+                            NomeArticolo = vc.Articoli.nomearticolo,
+                            Prezzo = vc.prezzo,
+                            Quantita = (int)vc.quantita,
+                            ImmagineUrl = vc.Articoli.immagine // Assegna l'URL dell'immagine
+                        })
+                        .ToList();
                 }
                 else
                 {
-                    // Recupera il carrello dal cookie per gli utenti non autenticati
-                    var carrelloJson = Request.Cookies["Carrello"];
-                    carrello = carrelloJson != null ?
-                        JsonConvert.DeserializeObject<List<CarrelloItem>>(carrelloJson.Value) :
-                        new List<CarrelloItem>();
+                    carrello = new List<CarrelloItem>();
                 }
-
-                return View(carrello);
             }
+            else
+            {
+                // Utente non autenticato: recupera il carrello dal cookie
+                var carrelloJson = Request.Cookies["Carrello"];
+                carrello = carrelloJson != null ?
+                    JsonConvert.DeserializeObject<List<CarrelloItem>>(carrelloJson.Value) :
+                    new List<CarrelloItem>();
+
+                // Per ciascun articolo nel carrello, carica l'URL dell'immagine
+                foreach (var item in carrello)
+                {
+                    var articolo = db.Articoli.Find(item.ArticoloId);
+                    if (articolo != null)
+                    {
+                        item.ImmagineUrl = articolo.immagine;
+                    }
+                }
+            }
+
+            return View(carrello);
+        }
+
 
         [HttpPost]
         public ActionResult AggiungiAlCarrello(int id, int quantita)
@@ -87,12 +100,13 @@ namespace GIGINOSTOP.Controllers
                             idcarrello = carrello.id,
                             idarticolo = id,
                             quantita = quantita,
-                            prezzo = db.Articoli.Find(id).prezzo
+                            prezzo = db.Articoli.Find(id).prezzo,
+                             
                         });
                     }
 
                     db.SaveChanges();
-                    return Json(new { success = true });
+
                 }
             }
             else
@@ -115,6 +129,7 @@ namespace GIGINOSTOP.Controllers
                         NomeArticolo = db.Articoli.Find(id).nomearticolo,
                         Prezzo = db.Articoli.Find(id).prezzo,
                         Quantita = quantita
+                    
                     };
                     carrello.Add(articolo);
                 }
@@ -169,7 +184,7 @@ namespace GIGINOSTOP.Controllers
 
                         // Aggiorna il cookie con il carrello modificato
                         Response.Cookies.Add(new HttpCookie("Carrello", carrelloJsonString));
-                    return Json(new { success = true });
+                  
 
                 }
                 }
@@ -271,5 +286,38 @@ namespace GIGINOSTOP.Controllers
 
             return RedirectToAction("Index", "Home"); // Ritorna alla home in caso di errore
         }
+        [HttpGet]
+        public ActionResult OttenereNumeroArticoli()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = User.Identity.Name;
+                var utente = db.Utenti.FirstOrDefault(u => u.id.ToString() == userId);
+
+                if (utente != null)
+                {
+                    var userIdInt = utente.id;
+                    var numeroArticoli = db.VociCarrello
+                        .Where(vc => vc.Carrello.idutente == userIdInt)
+                        .Sum(vc => (int?)vc.quantita) ?? 0;
+
+                    return Content(numeroArticoli.ToString());
+                }
+            }
+            else
+            {
+                var carrelloJson = Request.Cookies["Carrello"];
+                var carrello = carrelloJson != null ?
+                    JsonConvert.DeserializeObject<List<CarrelloItem>>(carrelloJson.Value) :
+                    new List<CarrelloItem>();
+
+                var numeroArticoli = carrello.Sum(item => item.Quantita);
+
+                return Content(numeroArticoli.ToString());
+            }
+
+            return Content("0");
+        }
     }
-    }
+}
+    

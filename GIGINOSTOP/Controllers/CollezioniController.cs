@@ -14,28 +14,109 @@ namespace GIGINOSTOP.Controllers
     {
         private DBContext db = new DBContext();
         // GET: Collezioni
-        public ActionResult Index()
+        private List<Articoli> GetArticoliByCategoriaAndPiattaforma(string nomeCategoria, string nomePiattaforma, int takeCount = 6)
         {
-            // Ottieni l'ID della categoria "console" (supponiamo che il nome sia esattamente "console")
-            int? idCategoriaConsole = db.Categoria.FirstOrDefault(c => c.nome.ToLower() == "Console!")?.id;
+            // Ottieni l'ID della categoria specificata
+            int? idCategoria = db.Categoria.FirstOrDefault(c => c.nome.ToLower() == nomeCategoria.ToLower())?.id;
 
-            // Ottieni l'ID della piattaforma "PS5" (supponiamo che il nome sia esattamente "PS5")
-            int? idPiattaformaPS5 = db.Piattaforma.FirstOrDefault(p => p.nome.ToLower() == "ps5")?.id;
+            // Ottieni l'ID della piattaforma specificata
+            int? idPiattaforma = db.Piattaforma.FirstOrDefault(p => p.nome.ToLower() == nomePiattaforma.ToLower())?.id;
 
-            if (idCategoriaConsole != null && idPiattaformaPS5 != null && idCategoriaConsole != 0 && idPiattaformaPS5 != 0)
+            if (idCategoria != null && idPiattaforma != null && idCategoria != 0 && idPiattaforma != 0)
             {
-                // Filtra e prendi al massimo 6 articoli che corrispondono alla categoria "console" e alla piattaforma "PS5"
-                var articoliConsolePS5 = db.Articoli
-                    .Where(a => a.idcategoria == idCategoriaConsole && a.idpiattaforma == idPiattaformaPS5)
-                    .Take(6) // Limita a 6 articoli
-                    .ToList();
+                // Filtra e prendi al massimo 'takeCount' articoli che corrispondono alla categoria e alla piattaforma specificate
+                var articoli = db.Articoli
+                                .Where(a => a.idcategoria == idCategoria && a.idpiattaforma == idPiattaforma)
+                                .Take(takeCount)
+                                .ToList();
 
-                return View(articoliConsolePS5);
+                return articoli;
             }
 
-            // Se non trovi la categoria "console" o la piattaforma "PS5", gestisci l'errore o restituisci una lista vuota
-            return View(new List<Articoli>());
+            // Se la categoria o la piattaforma non sono trovate, restituisci una lista vuota
+            return new List<Articoli>();
         }
+        public ActionResult Index()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsolePS5 = GetArticoliByCategoriaAndPiattaforma("Console!", "PS5", 6);
+
+            return View(articoliConsolePS5);
+        }
+        public ActionResult Xbox()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsoleXbox = GetArticoliByCategoriaAndPiattaforma("Console!", "Xbox", 6);
+
+            return View(articoliConsoleXbox);
+        }
+        public ActionResult Nindendo()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsoleNindendo = GetArticoliByCategoriaAndPiattaforma("Console!", "Nindendo", 6);
+
+            return View(articoliConsoleNindendo);
+        }
+        public ActionResult Bandai()
+        {
+         
+
+            return View();
+        }
+        public ActionResult PC()
+        {
+
+
+            return View();
+        }
+        public ActionResult Very()
+        {
+
+
+            return View();
+        }
+        public ActionResult Hori()
+        {
+
+
+            return View();
+        }
+        public ActionResult Fc24()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsoleFc24 = GetArticoliByCategoriaAndPiattaforma("Fc24", "Fc24", 4);
+
+            return View(articoliConsoleFc24);
+        }
+        public ActionResult Pokemon()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsolePokemon = GetArticoliByCategoriaAndPiattaforma("Pokemon", "Pokemon", 6);
+
+            return View(articoliConsolePokemon);
+        }
+        public ActionResult Streamer()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsoleStreamer = GetArticoliByCategoriaAndPiattaforma("Streamer", "Streamer", 6);
+
+            return View(articoliConsoleStreamer);
+        }
+        public ActionResult Msi()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsoleMsi = GetArticoliByCategoriaAndPiattaforma("Msi", "Msi", 6);
+
+            return View(articoliConsoleMsi);
+        }
+        public ActionResult Ps1()
+        {
+            // Ottieni gli articoli per la collezione PlayStation (categoria: "Console!", piattaforma: "PS5")
+            var articoliConsolePs1 = GetArticoliByCategoriaAndPiattaforma("Console!", "Ps1", 6);
+
+            return View(articoliConsolePs1);
+        }
+
 
         public ActionResult Details(int id)
         {
@@ -46,7 +127,11 @@ namespace GIGINOSTOP.Controllers
                 return HttpNotFound();
             }
 
-            var recensioni = db.Recensioni.Where(r => r.idarticolo == id).ToList();
+            // Carica le recensioni con l'oggetto Utente associato
+            var recensioni = db.Recensioni
+                                .Include(r => r.Utenti)
+                                .Where(r => r.idarticolo == id)
+                                .ToList();
 
             var userId = User.Identity.Name;
             var utente = db.Utenti.FirstOrDefault(u => u.id.ToString() == userId);
@@ -57,12 +142,19 @@ namespace GIGINOSTOP.Controllers
                 haEffettuatoOrdine = db.DettagliOrdine.Any(d => d.Ordini.idutente == utente.id && d.idarticolo == id);
             }
 
+            // Trova articoli correlati basati sulla stessa categoria dell'articolo corrente
+            var articoliCorrelati = db.Articoli
+                .Where(a => a.id != id && a.idcategoria == articolo.idcategoria && a.idpiattaforma ==articolo.idpiattaforma)
+                .Take(6) // Limita a 3 articoli correlati
+                .ToList();
+
             var viewModel = new DettaglioArticoloViewModel
             {
                 Articolo = articolo,
                 Recensioni = recensioni,
                 HaEffettuatoOrdine = haEffettuatoOrdine,
-                IdArticolo = id
+                IdArticolo = id,
+                ArticoliCorrelati = articoliCorrelati
             };
 
             return View(viewModel);
@@ -100,59 +192,29 @@ namespace GIGINOSTOP.Controllers
 
             return RedirectToAction("Details", new { id = viewModel.IdArticolo });
         }
+
         [Authorize]
-        [HttpPost]
-        public ActionResult ModificaRecensione(int idRecensione, string nuovoTesto, int nuovoPunteggio)
+        public ActionResult EliminaRecensione(int recensioneId)
         {
-            var userId = User.Identity.Name;
-            var utente = db.Utenti.FirstOrDefault(u => u.id.ToString() == userId);
-
-            if (utente == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var recensione = db.Recensioni.FirstOrDefault(r => r.id == idRecensione && r.idutente == utente.id);
+            var recensione = db.Recensioni.Find(recensioneId);
 
             if (recensione == null)
             {
-                return HttpNotFound(); // Recensione non trovata o non appartiene all'utente corrente
+                return HttpNotFound();
             }
 
-            recensione.testo = nuovoTesto;
-            recensione.punteggio = nuovoPunteggio;
+            // Verifica se l'utente autenticato è l'autore della recensione
+            if (recensione.idutente.ToString() == User.Identity.Name)
+            {
+                db.Recensioni.Remove(recensione);
+                db.SaveChanges();
 
-            db.Entry(recensione).State = EntityState.Modified;
-            db.SaveChanges();
+                return RedirectToAction("Details", "Collezioni", new { id = recensione.idarticolo });
+            }
 
-            return RedirectToAction("Details", new { id = recensione.idarticolo });
+            // Se l'utente non è autorizzato a eliminare questa recensione, gestisci l'errore
+            return RedirectToAction("Index", "Home"); // Redirezione a una pagina di errore o home
         }
 
-        [Authorize]
-        [HttpPost]
-        public ActionResult EliminaRecensione(int idRecensione)
-        {
-            var userId = User.Identity.Name;
-            var utente = db.Utenti.FirstOrDefault(u => u.id.ToString() == userId);
-
-            if (utente == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
-            var recensione = db.Recensioni.FirstOrDefault(r => r.id == idRecensione && r.idutente == utente.id);
-
-            if (recensione == null)
-            {
-                return HttpNotFound(); // Recensione non trovata o non appartiene all'utente corrente
-            }
-
-            int idArticolo = (int)recensione.idarticolo;
-
-            db.Recensioni.Remove(recensione);
-            db.SaveChanges();
-
-            return RedirectToAction("Details", new { id = idArticolo });
-        }
     }
 }
