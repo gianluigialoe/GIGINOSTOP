@@ -194,6 +194,7 @@ namespace GIGINOSTOP.Controllers
         }
 
         [Authorize]
+        [HttpPost]
         public ActionResult EliminaRecensione(int recensioneId)
         {
             var recensione = db.Recensioni.Find(recensioneId);
@@ -206,15 +207,32 @@ namespace GIGINOSTOP.Controllers
             // Verifica se l'utente autenticato è l'autore della recensione
             if (recensione.idutente.ToString() == User.Identity.Name)
             {
-                db.Recensioni.Remove(recensione);
-                db.SaveChanges();
+                int? idArticoloNullable = recensione.idarticolo;
 
-                return RedirectToAction("Details", "Collezioni", new { id = recensione.idarticolo });
+                // Verifica se idArticoloNullable ha un valore prima di utilizzarlo
+                if (idArticoloNullable.HasValue)
+                {
+                    int idArticolo = idArticoloNullable.Value; // Ottieni l'ID dell'articolo
+
+                    db.Recensioni.Remove(recensione);
+                    db.SaveChanges();
+
+                    // Redirect alla pagina dei dettagli dell'articolo dopo aver eliminato la recensione
+                    return RedirectToAction("Details", "Collezioni", new { id = idArticolo });
+                }
+                else
+                {
+                    // Gestisci il caso in cui idarticolo sia null (non dovrebbe accadere se la recensione è valida)
+                    // Puoi aggiungere un comportamento alternativo qui, se necessario
+                    return HttpNotFound(); // O un altro tipo di redirect o azione
+                }
             }
 
             // Se l'utente non è autorizzato a eliminare questa recensione, gestisci l'errore
             return RedirectToAction("Index", "Home"); // Redirezione a una pagina di errore o home
         }
+
+
 
     }
 }

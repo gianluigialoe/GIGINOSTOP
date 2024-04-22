@@ -255,6 +255,8 @@
     <Content Include="Views\Collezioni\Msi.cshtml" />
     <Content Include="Views\Collezioni\Ps1.cshtml" />
     <Content Include="Views\Home\Supermario.cshtml" />
+    <Content Include="Views\Home\ChiSiamo.cshtml" />
+    <Content Include="Views\Home\Contattaci.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

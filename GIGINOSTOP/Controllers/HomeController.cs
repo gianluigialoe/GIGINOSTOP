@@ -42,6 +42,18 @@ namespace GIGINOSTOP.Controllers
 
             return View();
         }
+        public ActionResult Contattaci()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+        public ActionResult ChiSiamo()
+        {
+            ViewBag.Message = "Your chi siamo page.";
+
+            return View();
+        }
         public ActionResult SearchArticles(string q)
         {
             // Confronta il termine di ricerca con il nomearticolo (ignorando maiuscole/minuscole)

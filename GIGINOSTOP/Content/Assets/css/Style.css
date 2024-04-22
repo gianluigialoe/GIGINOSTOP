@@ -1,16 +1,15 @@
 ﻿
-
-.img-fluid {
+/*.img-fluid {
     width: 100%;
     height: auto;
     transition: transform 0.3s ease;
 }
 
-/* Stile per l'effetto hover */
+ Stile per l'effetto hover 
 .collezione-link {
     position: relative;
     overflow: hidden;
-    margin-bottom: 20px; /* Spazio tra le immagini */
+    margin-bottom: 20px;  Spazio tra le immagini 
 }
 
     .collezione-link::before {
@@ -20,7 +19,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5); /* Colore sfondo trasparente */
+        background-color: rgba(0, 0, 0, 0.5);  Colore sfondo trasparente 
         opacity: 0;
         transition: opacity 0.3s ease;
     }
@@ -29,9 +28,31 @@
         opacity: 1;
     }
 
-    /* Stile per l'effetto di zoom durante l'hover */
+     Stile per l'effetto di zoom durante l'hover 
     .collezione-link:hover .img-fluid {
-        transform: scale(1.1); /* Effetto di zoom del 10% */
-    }
+        transform: scale(1.1);  Effetto di zoom del 10% 
+    }*/
 
-/* Stile per posizionare il contatore vicino all'icona del carrello */
+
+
+
+/*.card {
+    border: none;  Rimuove il bordo della card 
+}
+
+.card-title {
+    font-size: 18px;  Dimensione del titolo della card 
+    margin-bottom: 10px;  Spazio inferiore tra il titolo e il testo 
+    color: black;  Colore del testo del titolo della card 
+}
+
+.card-text {
+    font-size: 16px;  Dimensione del testo della card 
+    margin-bottom: 0;  Rimuove lo spazio inferiore del testo 
+    color: black;  Colore del testo del contenuto della card 
+}
+*/
+
+body {
+    background-color: black;
+}

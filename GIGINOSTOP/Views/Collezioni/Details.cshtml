@@ -5,19 +5,19 @@
 }
 
 <div class="container">
-    <h2>Dettagli Articolo</h2>
+
 
     @if (Model != null && Model.Articolo != null)
     {
         <div class="row">
-            <!-- Immagine a sinistra -->
+            <!-- Immagine a sinistra (su schermi larghi) -->
             <div class="col-lg-4 mb-3">
                 <div class="image-container">
                     <img src="@Model.Articolo.immagine" alt="@Model.Articolo.nomearticolo" class="img-fluid">
                 </div>
             </div>
 
-            <!-- Descrizione a destra -->
+            <!-- Descrizione a destra (su schermi larghi) -->
             <div class="col-lg-8 mb-3">
                 <div class="details-container">
                     <h3>@Model.Articolo.nomearticolo</h3>
@@ -33,87 +33,108 @@
                             Aggiungi al Carrello
                         </button>
                     }
+                    <!-- Mostra il prezzo -->
+                    @if (Model.Articolo.in_offerta.HasValue && Model.Articolo.prezzo_offerta.HasValue)
+                    {
+                        <p class="card-text">
+                            <del>Prezzo: @Model.Articolo.prezzo €</del><br>
+                            <strong>Prezzo in offerta: @Model.Articolo.prezzo_offerta €</strong>
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="card-text">Prezzo: @Model.Articolo.prezzo €</p>
+                    }
+                </div>
                 </div>
             </div>
-        </div>
+            
+       
 
-        <div class="price-container mt-3">
-            @if (Model.Articolo.in_offerta.HasValue && Model.Articolo.prezzo_offerta.HasValue)
-            {
-                <p>
-                    <del>Prezzo: @Model.Articolo.prezzo €</del><br>
-                    <strong>Prezzo in offerta: @Model.Articolo.prezzo_offerta €</strong>
-                </p>
-            }
-            else
-            {
-                <p>Prezzo: @Model.Articolo.prezzo €</p>
-            }
-        </div>
+        <!-- Mostra recensioni e form per aggiungere recensione -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <h4>Recensioni</h4>
+                <ul class="list-group">
+                    @if (Model.Recensioni != null && Model.Recensioni.Any())
+                    {
+                        foreach (var recensione in Model.Recensioni)
+                        {
+                            <li class="list-group-item">
+                                @if (recensione.Utenti != null)
+                                {
+                                    <p><strong>@recensione.Utenti.nome</strong> - @recensione.testo</p>
+                                    <p>Punteggio:<br /> <span class="render-stars" data-score="@recensione.punteggio"></span></p>
 
-        <!-- Mostra recensioni -->
-        <h4>Recensioni</h4>
-        if (Model.Recensioni != null && Model.Recensioni.Any())
-        {
-            <ul>
-                @foreach (var recensione in Model.Recensioni)
+                                    <!-- Mostra il bottone "Elimina" solo se l'utente autenticato è l'autore della recensione -->
+                                    if (User.Identity.IsAuthenticated && recensione.idutente.ToString() == User.Identity.Name)
+                                    {
+                                        <form method="post" action="@Url.Action("EliminaRecensione", "Collezioni")" onsubmit="return confirm('Sei sicuro di voler eliminare questa recensione?');">
+                                            @Html.Hidden("recensioneId", recensione.id)
+                                            <button type="submit" class="btn btn-sm btn-danger">Elimina</button>
+                                        </form>
+                                    }
+                                }
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li class="list-group-item">Non ci sono recensioni per questo articolo.</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="col-md-6 mt-4 mt-md-0">
+                @if (User.Identity.IsAuthenticated && Model.HaEffettuatoOrdine)
                 {
-                    <li>
-                        @if (recensione.Utenti != null)
-                        {
-                            <p><strong>@recensione.Utenti.nome</strong> - @recensione.testo</p>
-                            <p>Punteggio: @recensione.punteggio</p>
-
-                            <!-- Mostra il bottone "Elimina" solo se l'utente autenticato è l'autore della recensione -->
-                            if (User.Identity.IsAuthenticated && recensione.idutente.ToString() == User.Identity.Name)
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Aggiungi una recensione</h5>
+                            @using (Html.BeginForm("ScriviRecensione", "Collezioni", FormMethod.Post))
                             {
-                                <button class="btn btn-danger" onclick="eliminaRecensione(@recensione.id)">Elimina</button>
+                                @Html.HiddenFor(model => model.IdArticolo)
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TestoRecensione, "Recensione")
+                                    @Html.TextAreaFor(model => model.TestoRecensione, new { @class = "form-control", rows = 4 })
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PunteggioRecensione, "Punteggio")
+                                    <select id="PunteggioRecensione" name="PunteggioRecensione" class="form-control">
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            <option value="@i">@i</option>
+                                        }
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Invia Recensione</button>
                             }
-                        }
-                        else
-                        {
-                            <p>Recensione anonima - @recensione.testo</p>
-                            <p>Punteggio: @recensione.punteggio</p>
-                        }
-                    </li>
+                        </div>
+                    </div>
                 }
-            </ul>
-        }
-        else
-        {
-            <p>Non ci sono recensioni per questo articolo.</p>
-        }
-        <!-- Mostra il form per aggiungere una recensione solo agli utenti autenticati che hanno effettuato un ordine -->
-        if (User.Identity.IsAuthenticated && Model.HaEffettuatoOrdine)
-        {
-            using (Html.BeginForm("ScriviRecensione", "Collezioni", FormMethod.Post))
-            {
-                @Html.HiddenFor(model => model.IdArticolo)
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TestoRecensione, "Recensione")
-                    @Html.TextAreaFor(model => model.TestoRecensione, new { @class = "form-control", rows = 4 })
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PunteggioRecensione, "Punteggio")
-                    @Html.DropDownListFor(model => model.PunteggioRecensione, new SelectList(new[] { 1, 2, 3, 4, 5 }), new { @class = "form-control" })
-                </div>
-                <button type="submit" class="btn btn-primary">Invia Recensione</button>
-            }
-        }
-        else if (User.Identity.IsAuthenticated && !Model.HaEffettuatoOrdine)
-        {
-            <p>Devi effettuare un ordine per questo articolo prima di poter lasciare una recensione.</p>
-        }
-        else
-        {
-            <p>Per scrivere una recensione, <a href="@Url.Action("Login", "Account")">effettua l'accesso</a>.</p>
-        }
+                else if (User.Identity.IsAuthenticated && !Model.HaEffettuatoOrdine)
+                {
+                    <div class="alert alert-warning mt-4" role="alert">
+                        Devi effettuare un ordine per questo articolo prima di poter lasciare una recensione.
+                    </div>
+                }
+                else
+                {
+                    <div class="alert alert-info mt-4" role="alert">
+                        Per scrivere una recensione, <a href="@Url.Action("Login", "Auth")">effettua l'accesso</a>.
+                    </div>
+                }
+            </div>
+        </div>
     }
     else
     {
-        <p>Articolo non trovato o non disponibile.</p>
+        <div class="alert alert-danger mt-4" role="alert">
+            Articolo non trovato o non disponibile.
+        </div>
     }
 </div>
+
 <!-- Mostra articoli correlati -->
 <h4>Articoli Correlati</h4>
 <div class="row">
@@ -170,22 +191,26 @@
     }
 
 
-    function eliminaRecensione(recensioneId) {
-        if (confirm('Sei sicuro di voler eliminare questa recensione?')) {
-            $.ajax({
-                type: "POST",
-                url: '/Collezioni/EliminaRecensione',
-                data: {
-                    recensioneId: recensioneId
-                },
-                success: function (response) {
-                    // Ricarica la pagina o esegui altre azioni dopo l'eliminazione
-                    location.reload(); // Esempio: ricarica la pagina
-                },
-                error: function (xhr, status, error) {
-                    console.error("Si è verificato un errore durante l'eliminazione della recensione.");
-                }
-            });
+
+    function renderStars(score) {
+        let starsHtml = '';
+        const maxStars = 10;
+        for (let i = 1; i <= maxStars; i++) {
+            if (i <= score) {
+                starsHtml += '<i class="bi bi-star-fill text-warning"></i>';
+            } else {
+                starsHtml += '<i class="bi bi-star text-warning"></i>';
+            }
         }
+        return starsHtml;
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const renderStarsElements = document.querySelectorAll('.render-stars');
+        renderStarsElements.forEach(function (element) {
+            const score = parseInt(element.dataset.score, 10);
+            element.innerHTML = renderStars(score);
+        });
+    });
+
 </script>
