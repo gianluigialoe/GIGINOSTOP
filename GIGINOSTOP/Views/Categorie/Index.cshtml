@@ -19,9 +19,14 @@
         <tr>
             <td>@categoria.id</td>
             <td>@categoria.nome</td>
-            <td>@Html.ActionLink("Dettagli", "Dettagli", new { id = categoria.id })</td> <!-- Aggiungi un link per i dettagli -->
+            <td>
+                <a href="@Url.Action("Dettagli", "Categorie", new { id = categoria.id })" class="btn btn-dark">
+                    Dettagli
+                </a>
+            </td>
 
-         
+
+
             <td>
                 @using (Html.BeginForm("Elimina", "Categorie", FormMethod.Post))
                 {

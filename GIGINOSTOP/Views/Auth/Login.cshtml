@@ -71,7 +71,7 @@
             @Html.AntiForgeryToken()
 
             <div class="form-group">
-                @Html.LabelFor(m => m.email, new { @class = "form-label" })
+                @Html.LabelFor(m => m.email,"Email", new { @class = "form-label" })
                 @Html.TextBoxFor(m => m.email, new { @class = "form-control", placeholder = "Inserisci il tuo indirizzo email" })
             </div>
 

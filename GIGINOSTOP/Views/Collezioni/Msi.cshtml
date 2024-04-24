@@ -12,14 +12,13 @@
             <img src="https://storage-asset.msi.com/global/picture/banner/banner_1704451637d5aad1a3673205206eb52bd44a572ad3.jpeg" class="img-fluid" alt="Immagine">
         </div>
 
-        <!-- Cards a destra -->
         <div class="col-lg-8">
             <div class="row">
                 @foreach (var articolo in Model)
                 {
                     <div class="col-md-4 mb-3">
-                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
-                            <div class="card border-0">
+                        <div class="card border-0">
+                            <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" style="text-decoration: none; color: inherit;">
                                 <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
                                 <div class="card-body p-2">
                                     <h5 class="card-title">@articolo.nomearticolo</h5>
@@ -35,8 +34,8 @@
                                         <p class="card-text">Prezzo: @articolo.prezzo €</p>
                                     }
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 }
             </div>

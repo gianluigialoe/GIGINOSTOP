@@ -17,25 +17,25 @@
                 @foreach (var articolo in Model)
                 {
                     <div class="col-md-4 mb-3">
-                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
-                            <div class="card border-0">
+                        <div class="card border-0">
+                            <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" style="text-decoration: none; color: inherit;">
                                 <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
                                 <div class="card-body p-2">
-                                    <h5 class="card-title">@articolo.nomearticolo</h5>
+                                    <h4 class="custom-h4" style="color: #333; /* Colore testo personalizzato */">@articolo.nomearticolo</h4>
                                     @if (articolo.in_offerta.HasValue && articolo.prezzo_offerta.HasValue)
                                     {
-                                        <p class="card-text">
+                                        <p class="card-text" style="color: #555; /* Colore testo personalizzato */">
                                             <del>Prezzo: @articolo.prezzo €</del><br>
                                             <strong>Prezzo in offerta: @articolo.prezzo_offerta €</strong>
                                         </p>
                                     }
                                     else
                                     {
-                                        <p class="card-text">Prezzo: @articolo.prezzo €</p>
+                                        <p class="card-text" style="color: #555; /* Colore testo personalizzato */">Prezzo: @articolo.prezzo €</p>
                                     }
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 }
             </div>

@@ -19,7 +19,11 @@
         <tr>
             <td>@piattaforma.id</td>
             <td>@piattaforma.nome</td>
-            <td>@Html.ActionLink("Dettagli", "Dettagli", new { id = piattaforma.id })</td> <!-- Aggiungi un link per i dettagli -->
+            <td>
+                <a href="@Url.Action("Dettagli", "Piattaforme", new { id = piattaforma.id })" class="btn btn-dark">
+                    Dettagli
+                </a>
+            </td>
 
             <td>
                 @using (Html.BeginForm("Elimina", "Piattaforme", FormMethod.Post))
@@ -33,5 +37,7 @@
 </table>
 
 <div>
-    @Html.ActionLink("Torna Indietro", "Index")
+    <a href="@Url.Action("Index", "Home")" class="btn btn-dark mt-2">
+        Torna Indietro
+    </a>
 </div>

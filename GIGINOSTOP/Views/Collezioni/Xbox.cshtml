@@ -4,7 +4,6 @@
     ViewBag.Title = "Xbox";
 }
 
-
 <div class="container-fluid">
     <div class="row">
         <!-- Immagine a sinistra -->
@@ -18,8 +17,8 @@
                 @foreach (var articolo in Model)
                 {
                     <div class="col-md-4 mb-3">
-                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
-                            <div class="card border-0">
+                        <div class="card border-0">
+                            <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" style="text-decoration: none; color: inherit;">
                                 <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
                                 <div class="card-body p-2">
                                     <h5 class="card-title">@articolo.nomearticolo</h5>
@@ -35,12 +34,11 @@
                                         <p class="card-text">Prezzo: @articolo.prezzo €</p>
                                     }
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 }
             </div>
         </div>
     </div>
 </div>
-

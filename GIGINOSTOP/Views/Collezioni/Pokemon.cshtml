@@ -1,9 +1,8 @@
 ﻿@model List<GIGINOSTOP.Models.Articoli>
 
 @{
-    ViewBag.Title = "Xbox";
+    ViewBag.Title = "POKEMON";
 }
-
 
 <div class="container-fluid">
     <div class="row">
@@ -18,11 +17,11 @@
                 @foreach (var articolo in Model)
                 {
                     <div class="col-md-4 mb-3">
-                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
-                            <div class="card border-0">
-                                <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
-                                <div class="card-body p-2">
-                                    <h5 class="card-title">@articolo.nomearticolo</h5>
+                        <div class="card border-0">
+                            <div class="card-body">
+                                <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="stretched-link" style="text-decoration: none; color: inherit;">
+                                    <img src="@articolo.immagine" class="card-img-top" alt="@articolo.nomearticolo">
+                                    <h5 class="card-title mt-2">@articolo.nomearticolo</h5>
                                     @if (articolo.in_offerta.HasValue && articolo.prezzo_offerta.HasValue)
                                     {
                                         <p class="card-text">
@@ -34,13 +33,12 @@
                                     {
                                         <p class="card-text">Prezzo: @articolo.prezzo €</p>
                                     }
-                                </div>
+                                </a>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 }
             </div>
         </div>
     </div>
 </div>
-

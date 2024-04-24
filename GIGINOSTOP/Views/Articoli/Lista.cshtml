@@ -42,7 +42,9 @@
         }
     </td>
     <td>
-        @Html.ActionLink("Dettagli", "Dettagli", "Articoli", new { id = articolo.id }, null)
+        <form action="@Url.Action("Dettagli", "Articoli", new { id = articolo.id })" method="get">
+            <button type="submit" class="btn btn-dark">Dettagli</button>
+        </form>
     </td>
 </tr>
     }

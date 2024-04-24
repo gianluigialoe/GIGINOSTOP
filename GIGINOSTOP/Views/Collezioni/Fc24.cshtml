@@ -4,31 +4,23 @@
     ViewBag.Title = "Fc24";
 }
 
-
 <section class="section">
-
-
     <div class="MB-main">
-        <!-- <p>Entra nel Club</p> -->
-        <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.fc24/countdownFC/logo.png?rel=1" alt="">
+        <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.fc24/countdownFC/logo.png?rel=1" alt="FC24 Logo">
     </div>
-
-
-
-
 </section>
 
 <div class="container-fluid">
     <div class="row">
-        <!-- Immagine a sinistra -->
+        <!-- Immagini -->
         <div class="col-lg-4 mb-3">
-            <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.fc24/LandingPage/CategoryCard/1/ProductCard.jpg" class="img-fluid rounded" style="height: 200px;" alt="Immagine">
+            <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.fc24/LandingPage/CategoryCard/1/ProductCard.jpg" class="img-fluid rounded" style="height: 200px;" alt="Categoria 1">
         </div>
         <div class="col-lg-4 mb-3">
-            <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.fc24/LandingPage/CategoryCard/2/ProductCard.jpg" class="img-fluid rounded" style="height: 200px;" alt="Immagine">
+            <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.fc24/LandingPage/CategoryCard/2/ProductCard.jpg" class="img-fluid rounded" style="height: 200px;" alt="Categoria 2">
         </div>
         <div class="col-lg-4 mb-3">
-            <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.fc24/LandingPage/CategoryCard/3/ProductCard.jpg?rel=1" class="img-fluid rounded" style="height: 200px;" alt="Immagine">
+            <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.fc24/LandingPage/CategoryCard/3/ProductCard.jpg?rel=1" class="img-fluid rounded" style="height: 200px;" alt="Categoria 3">
         </div>
 
         <!-- Contenuto a destra -->
@@ -40,8 +32,8 @@
                 @foreach (var articolo in Model)
                 {
                     <div class="col-lg-3 col-md-6 mb-3">
-                        <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="card-link">
-                            <div class="card border-0">
+                        <div class="card border-0">
+                            <a href="@Url.Action("Details", "Collezioni", new { id = articolo.id })" class="text-decoration-none text-dark">
                                 <img src="@articolo.immagine" class="card-img-top rounded" style="height: 300px;" alt="@articolo.nomearticolo">
                                 <div class="card-body p-2">
                                     <h5 class="card-title">@articolo.nomearticolo</h5>
@@ -57,8 +49,8 @@
                                         <p class="card-text">Prezzo: @articolo.prezzo €</p>
                                     }
                                 </div>
-                            </div>
-                        </a>
+                            </a>
+                        </div>
                     </div>
                 }
             </div>

@@ -32,7 +32,7 @@
                                         <input type="hidden" name="id" value="@item.ArticoloId" />
                                         <input type="number" name="quantita" id="quantita_@item.ArticoloId" class="form-control" value="@item.Quantita" min="1" />
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Aggiorna Quantità</button>
+                                    <button type="submit" class="btn btn-dark">Aggiorna Quantità</button>
                                 </form>
                                 <form method="post" action="@Url.Action("EliminaArticolo", "Carrello")">
                                     <input type="hidden" name="id" value="@item.ArticoloId" />
@@ -46,7 +46,7 @@
             <div class="mt-4">
                 <h3>Totale: @Model.Sum(item => item.Prezzo * item.Quantita) €</h3>
                 <form method="post" action="@Url.Action("ConfermaOrdine", "Carrello")">
-                    <button type="submit" class="btn btn-success">Conferma Ordine</button>
+                    <button type="submit" class="btn btn-dark">Conferma Ordine</button>
                 </form>
             </div>
         </div>

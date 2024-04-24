@@ -4,45 +4,32 @@
     ViewBag.Title = "Home Page";
 }
 
-
-<header>
-    <!-- Includi qui l'header, se necessario -->
-</header>
-
-<div class="container">
-    <section class="section is-first">
-        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-                <!-- Slide 1 -->
-                <div class="carousel-item active">
-                    <a href="@Url.Action("Dettagli", "Home")">
-                        <img src="//www.gamestop.it/Views/Locale/Content/Images//PS5LiteGeneric/slider.jpg?rel=4" class="d-block w-100" alt="Prima Immagine">
-                    </a>
-                </div>
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                    <a href="@Url.Action("Xbox", "Collezioni")">
-                        <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.Xbox/HeroSliderConsole/slider.jpg" class="d-block w-100" alt="Seconda Immagine">
-                    </a>
-                </div>
-                <!-- Slide 3 -->
-                <div class="carousel-item">
-                    <a href="@Url.Action("Supermario", "Home")">
-                        <img src="//www.gamestop.it/Views/Locale/Content/Images//landing.nintendo/MarioVsDonkey/Slider.jpg?rel=2" class="d-block w-100" alt="Terza Immagine">
-                    </a>
-                </div>
-            </div>
-            <!-- Next/Previous controls -->
-            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="sr-only">Next</span>
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <a href="@Url.Action("Dettagli", "Home")">
+                <img src="//www.gamestop.it/Views/Locale/Content/Images/PS5LiteGeneric/slider.jpg?rel=4" class="d-block w-100" alt="...">
             </a>
         </div>
-    </section>
+        <div class="carousel-item">
+            <a href="@Url.Action("Xbox", "Collezioni")">
+                <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.Xbox/HeroSliderConsole/slider.jpg" class="d-block w-100" alt="...">
+            </a>
+        </div>
+        <div class="carousel-item">
+            <a href="@Url.Action("Bandai", "Collezioni")">
+                <img src="//www.gamestop.it/Views/Locale/Content/Images/landing.nintendo/MarioVsDonkey/Slider.jpg?rel=2" class="d-block w-100" alt="...">
+            </a>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
 </div>
 
 
@@ -87,7 +74,7 @@
         <!-- IconSet PlayStation Accessories -->
         <div class="col-lg-2 col-md-4 col-sm-6">
             <a href="@Url.Action("Streamer", "Collezioni")" class="btn btn-custom collezione-link">
-                <img src="//www.gamestop.it/Views/Locale/Content/Images/_IconSet/IconSet_PlayStationAccessoriesGeneric.svg" class="img-fluid" alt="IconSet PlayStation Accessories">
+                <img src="//static-it.gamestop.it/images/products/309143/2med.jpg" class="img-fluid" alt="IconSet PlayStation Accessories">
             </a>
         </div>
 
@@ -108,7 +95,7 @@
         <!-- Logo Publisher Pokemon -->
         <div class="col-lg-2 col-md-4 col-sm-6">
             <a href="@Url.Action("Pokemon", "Collezioni")" class="btn btn-custom collezione-link">
-                <img src="//www.gamestop.it/Views/Locale/Content/Images/LogosPublisher/Pokemon.png" class="img-fluid" alt="Logo Publisher Pokemon">
+                <img src="//encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTARduOjC28KfCA1e8UnvRQWOsr8vKrTfuyhQ&usqp=CAU" class="img-fluid" alt="Logo Publisher Pokemon">
             </a>
         </div>
 
@@ -122,14 +109,14 @@
         <!-- IconSet Games All Platforms -->
         <div class="col-lg-2 col-md-4 col-sm-6">
             <a href="@Url.Action("Ps1", "Collezioni")" class="btn btn-custom collezione-link">
-                <img src="//www.gamestop.it/Views/Locale/Content/Images/_IconSet/IconSet_GamesAllPlatforms.svg" class="img-fluid" alt="IconSet Games All Platforms">
+                <img src="//static-it.gamestop.it/images/products/300998/3max.jpg" class="img-fluid" alt="IconSet Games All Platforms">
             </a>
         </div>
 
         <!-- Logo MSI -->
         <div class="col-lg-2 col-md-4 col-sm-6">
             <a href="@Url.Action("Msi", "Collezioni")" class="btn btn-custom collezione-link">
-                <img src="//microtech.store/ludix/_images/logo_msi.png" class="img-fluid" alt="Logo MSI">
+                <img src="//encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeKlEcMW1V9bl1j3vfhvZRVBwMO4IcT3JTAw&usqp=CAU" class="img-fluid" alt="Logo MSI">
             </a>
         </div>
 
@@ -155,12 +142,5 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-        $('#carouselExampleControls').carousel({
-            interval: 3000, // Cambia slide ogni 3 secondi
-            wrap: true, // Ripeti il carousel all'infinito
-            pause: false // Non mettere in pausa al passaggio del mouse
-        });
-    });
-</script>
+
+
